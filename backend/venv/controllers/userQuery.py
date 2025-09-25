@@ -12,9 +12,9 @@ from langgraph.prebuilt import create_react_agent
 
 load_dotenv()
 
-OLLAMA_MODEL_NAME=os.getenv("OLLAMA_MODEL","llama3.1:8b")
-OLLAMA_MODEL_BASE_URL=os.getenv("OLLAMA_BASE_URL","http://localhost:11434")
-GOOGLE_GEMINI_API_KEY=os.getenv("GOOGLE_GEMINI_API_KEY","AIzaSyDkpDYTvITqOpd7C_Y24S2LK89DEnCjLxU")
+OLLAMA_MODEL_NAME=os.getenv("OLLAMA_MODEL")
+OLLAMA_MODEL_BASE_URL=os.getenv("OLLAMA_BASE_URL")
+GOOGLE_GEMINI_API_KEY=os.getenv("GOOGLE_GEMINI_API_KEY")
 
 router = APIRouter(prefix="/userQuery",tags=["userQuery"])
 
