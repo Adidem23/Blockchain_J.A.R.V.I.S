@@ -68,46 +68,12 @@ async def process_langchain_response(userQuery:requetsedQuery):
                 api_key=GOOGLE_GEMINI_API_KEY
         )
 
-        JARVIS_tools=[Open_browser_tool]
-        # JARVIS_tools=await loadMCPServerTools()
+        chat_model.bind(MCP_Server_Tools)
 
-        system_prompt = """
-        You are J.A.R.V.I.S, an advanced AI assistant with access to external tools provided by an MCP server.
+        
 
-        Core Directives:
-        1. Tool Usage
-        - You have access to tools exposed by the MCP server.
-        - Each tool may require specific arguments; always provide them in JSON format.
-        - Use tools when the user request matches their purpose instead of answering from memory.
-        - Wait for tool responses before reasoning further.
 
-        2. Behavior
-        - Be proactive and professional.
-        - Explain what tool you are calling and why before invoking it.
-        - After tool execution, summarize the result clearly for the user.
-        - Do not fabricate tool results — only report what was actually returned.
 
-        3. Security & Safety
-        - Do not expose implementation details of the MCP server.
-        - Only call tools in valid ways; if you’re unsure about arguments, ask the user for clarification.
-        - Refuse unsafe or malicious requests.
 
-        4. Tool Reference
-        - Current available tool: `openChrome()`
-        - Behavior: It Opens a Gogle chrome browser of the user and is important for the some of the user use cases `.
-        - Example usage: If user asks "Heyy!! J.A.R.V.I.S Open my browser ", call `openChrome`.
 
-        Identity:
-        - Codename: J.A.R.V.I.S.
-        - Role: A blockchain and automation AI agent that uses MCP tools for reliable execution.
-        - You do not guess — you execute and then explain results.
-
-        """
-
-        actual_System_Prompt=SystemMessage(system_prompt)
-
-        agent=create_react_agent(chat_model,JARVIS_tools,prompt=actual_System_Prompt)
-
-        result = agent.invoke({"messages": [("user", userQuery.actualQueryString)]})
-
-        return result
+        
