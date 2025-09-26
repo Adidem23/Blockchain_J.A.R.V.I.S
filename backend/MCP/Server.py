@@ -1,14 +1,18 @@
 from mcp.server.fastmcp import FastMCP
+# import pyautogui
+import time
 
 mcp = FastMCP("J.A.R.V.I.S")
 
-async def callSampleFunction():
-    return {"msg":"Sample output of callSampleFunction"}
 
 @mcp.tool()
-async def sampleTool(msg):
-    result= await callSampleFunction()
-    return {"msg":f"This tool retruned correct JSON {result} with {msg}"}
+def openChrome():
+    return("start chrome process")
+    pyautogui.press('win')
+    time.sleep(1)
+    pyautogui.write('Chrome')
+    time.sleep(1) 
+    pyautogui.press('enter')
 
 
 if __name__ == "__main__":

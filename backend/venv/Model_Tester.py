@@ -12,16 +12,16 @@ GOOOGLE_GEMINI_API_KEY=os.getenv("GOOGLE_GEMINI_API_KEY")
 
 start_time=time.time()
 
-# llm = OllamaLLM(
-#     model=OLLAMA_MODEL_NAME,
-#     temperature=0.7,
-#     base_url=OLLAMA_MODEL_BASE_URL
-# )
-
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    api_key=GOOOGLE_GEMINI_API_KEY
+llm = OllamaLLM(
+    model=OLLAMA_MODEL_NAME,
+    temperature=0.7,
+    base_url=OLLAMA_MODEL_BASE_URL
 )
+
+# llm = ChatGoogleGenerativeAI(
+#     model="gemini-2.5-flash",
+#     api_key=GOOOGLE_GEMINI_API_KEY
+# )
 
 input_text="Who were the spartan warriors?"
 response=llm.invoke(input_text)
