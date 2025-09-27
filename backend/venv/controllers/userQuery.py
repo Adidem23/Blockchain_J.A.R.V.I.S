@@ -1,10 +1,7 @@
 import os
-import json
-import asyncio
 import pyautogui
 import time
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
+import cv2
 from dotenv import load_dotenv
 from fastapi import APIRouter
 from views.userQuery import requetsedQuery
@@ -14,12 +11,10 @@ from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain.tools import StructuredTool
 from langchain_core.messages import SystemMessage
-from langchain.agents import AgentExecutor
 
 load_dotenv()
 
-
-GOOGLE_GEMINI_API_KEY=os.getenv("GOOGLE_GEMINI_API_KEY","AIzaSyDkpDYTvITqOpd7C_Y24S2LK89DEnCjLxU")
+GOOGLE_GEMINI_API_KEY=os.getenv("GOOGLE_GEMINI_API_KEY","AIzaSyB6mH4-5OcybeEBEsGhJ7YFzNM-EOqWgHI")
 
 router = APIRouter(prefix="/userQuery",tags=["userQuery"])
 
@@ -27,38 +22,106 @@ router = APIRouter(prefix="/userQuery",tags=["userQuery"])
 def send_breating_msg():
         return {"message":"I am Jinda Here !!"}
 
-# async def loadMCPServerTools(): 
-#         server_script_path="MCP/Server.py" 
-#         command = "python" 
-#         server_params = StdioServerParameters( command=command, args=[server_script_path], env=None ) 
-#         async with stdio_client(server_params) as (read, write): 
-#                 async with ClientSession(read, write) as session: 
-#                         await session.initialize() 
-#                         wrapped_tools = [] 
-#                         tools_info= await session.list_tools() 
-#                         for tool in tools_info.tools: 
-#                                 async def tool_caller(query: str, tool_name=tool.name): 
-#                                         result = await session.call_tool(tool_name,{"query": query}) 
-#                                         return result 
-                                
-#                                 wrapped_tools.append( StructuredTool.from_function( func=tool_caller, name=tool.name, description=tool.description, ) ) 
-                                
-#                                 return wrapped_tools
+#-------### This is Starting of the Tooools ####-----------#
+
+def openMetamaskWallet():
+         pyautogui.press("win")
+         time.sleep(1)
+         pyautogui.typewrite("chrome", interval=0.1)
+         time.sleep(1)
+         pyautogui.press("enter")
+         time.sleep(3)
+         pyautogui.typewrite("chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html", interval=0.05)
+         pyautogui.press("enter")
+         time.sleep(3)
+         pyautogui.typewrite("Venom@123", interval=0.1)
+         pyautogui.press("enter")
 
 
-def openChrome():
-    pyautogui.press('win')
-    time.sleep(1)
-    pyautogui.write('Chrome')
-    time.sleep(1) 
-    pyautogui.press('enter')
+def sendTransactionToWalletAddress():
+    send_btn = pyautogui.locateOnScreen(r"D:\hp\Dev\EthIndia_2025\backend\venv\ass\send.png", confidence=0.8)
+    if send_btn:
+        pyautogui.click(send_btn)
+        time.sleep(1)
+        pyautogui.typewrite("0x2f9a620CA1811EF90200789e7511d88D224053dD",interval=0.2)
+        time.sleep(4)
+        pyautogui.press("enter")
+        pyautogui.typewrite("0.000001",interval=0.3)
+        time.sleep(1)
+        pyautogui.press("enter")
+        continue_btn= pyautogui.locateOnScreen(r"D:\hp\Dev\EthIndia_2025\backend\venv\ass\continue.png", confidence=0.8)
+        if continue_btn:
+               pyautogui.click(continue_btn)
+               time.sleep(2)
+               confirm_btn= pyautogui.locateOnScreen(r"D:\hp\Dev\EthIndia_2025\backend\venv\ass\confirm.png", confidence=0.8)
+               if confirm_btn:
+                      pyautogui.click(confirm_btn)
+                      time.sleep(2)
+
+def feedRootStockTestnetWallet():
+        pyautogui.press("win")
+        time.sleep(1)
+        pyautogui.typewrite("chrome", interval=0.1)
+        time.sleep(1)
+        pyautogui.press("enter")
+        time.sleep(3)
+        pyautogui.typewrite("https://faucet.rootstock.io",interval=0.2)
+        time.sleep(1)
+        pyautogui.press("enter")
+        time.sleep(1)
 
 
-Open_browser_tool=StructuredTool.from_function(
-        func=openChrome,
-        name="OpenChrome",
-        description="Opens User Chrome Browser"
+def visitRootStockBlockExplorer():
+        pyautogui.press("win")
+        time.sleep(1)
+        pyautogui.typewrite("chrome", interval=0.1)
+        time.sleep(1)
+        pyautogui.press("enter")
+        time.sleep(1)
+        pyautogui.typewrite("https://explorer.testnet.rootstock.io",interval=0.1)
+        time.sleep(2)
+        pyautogui.press("enter")
+        time.sleep(5)
+        search_bar= pyautogui.locateOnScreen(r"D:\hp\Dev\EthIndia_2025\backend\venv\ass\search.png", confidence=0.8)
+        if search_bar:
+                pyautogui.click(search_bar)
+                time.sleep(1)
+                pyautogui.typewrite("0xCd60F24071Dc0d145E366aF0128E0c2a4689cd46",interval=0.1)
+                time.sleep(3)
+                Address_b= pyautogui.locateOnScreen(r"D:\hp\Dev\EthIndia_2025\backend\venv\ass\Address_S.png", confidence=0.8)
+                if Address_b:
+                        pyautogui.click(Address_b)
+                        time.sleep(2)
+                        pyautogui.press("enter")
+
+
+                     
+open_Metamask_tool=StructuredTool.from_function(
+        func=openMetamaskWallet,
+        name="openMetamaskWallet",
+        description="Opens User's Metamask Extension"
         )
+
+send_Transaction_Tool=StructuredTool.from_function(
+        func=sendTransactionToWalletAddress,
+        name="sendTransactionToWalletAddress",
+        description="Sends a user trnsaction through metamask"
+        )
+
+feed_RootStock_Testnet_Wallet_Tool=StructuredTool.from_function(
+       func=feedRootStockTestnetWallet,
+       name="feedRootStockTestnetWallet",
+       description=" Opens users metamask wallet through rootstock testnet"
+)
+
+visit_Root_Stock_BlockExplorer_Tool=StructuredTool.from_function(
+       func=visitRootStockBlockExplorer,
+       name="visitRootStockBlockExplorer",
+       description="Shows end users his/her transaction on rootstock block explorer"
+)
+
+#-------### This is Ending of the Tooools ####-----------#
+
 
 @router.post("/processUserQuery")
 async def process_langchain_response(userQuery:requetsedQuery):
@@ -68,8 +131,7 @@ async def process_langchain_response(userQuery:requetsedQuery):
                 api_key=GOOGLE_GEMINI_API_KEY
         )
 
-        JARVIS_tools=[Open_browser_tool]
-        # JARVIS_tools=await loadMCPServerTools()
+        JARVIS_tools=[open_Metamask_tool,send_Transaction_Tool,feed_RootStock_Testnet_Wallet_Tool,visit_Root_Stock_BlockExplorer_Tool]
 
         system_prompt = """
         You are J.A.R.V.I.S, an advanced AI assistant with access to external tools provided by an MCP server.
@@ -93,9 +155,25 @@ async def process_langchain_response(userQuery:requetsedQuery):
         - Refuse unsafe or malicious requests.
 
         4. Tool Reference
-        - Current available tool: `openChrome()`
-        - Behavior: It Opens a Gogle chrome browser of the user and is important for the some of the user use cases `.
-        - Example usage: If user asks "Heyy!! J.A.R.V.I.S Open my browser ", call `openChrome`.
+        - Current available tools
+        1. openMetamaskWallet()
+        - Behavior: It Opens a Metamask of the user and is important for the some of the user use cases `.
+        - Example usage: If user asks "Heyy!! J.A.R.V.I.S Open my Metamask ", call `openMetamaskWallet`
+        
+        2.sendTransactionToWalletAddress():
+        - Behavior: Metamask wallet is necessary for the sending transaction at any cost and it opens a dialogue box to enter the wallet address of the receiver 
+
+        Example usage: If user asks "Heyy!! J.A.R.V.I.S Send a Transaction from my metamask to Soham", call `openMetamaskWallet` first to open metamask and then `sendTransactionToWalletAddress` to send the transaction to the user through metamask
+
+        3.feedRootStockTestnetWallet():
+          Behavior: It opens the Rootstock testnet blockchain through faucet
+
+          Example usage: If user asks open my Rootstock faucet  then call `feedRootStockTestnetWallet`
+
+        4.visitRootStockBlockExplorer():
+         Behavior: It opens the Rootstock testnet users blockchain explorer
+
+          Example usage: If user asks I Want see my all transactions on Rootstock testnet then call `visitRootStockBlockExplorer`
 
         Identity:
         - Codename: J.A.R.V.I.S.
