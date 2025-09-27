@@ -14,7 +14,7 @@ from langchain_core.messages import SystemMessage
 
 load_dotenv()
 
-GOOGLE_GEMINI_API_KEY=os.getenv("GOOGLE_GEMINI_API_KEY","AIzaSyB6mH4-5OcybeEBEsGhJ7YFzNM-EOqWgHI")
+GOOGLE_GEMINI_API_KEY=os.getenv("GOOGLE_GEMINI_API_KEY")
 
 router = APIRouter(prefix="/userQuery",tags=["userQuery"])
 
