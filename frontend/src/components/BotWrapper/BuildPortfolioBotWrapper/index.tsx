@@ -1,0 +1,49 @@
+import React from "react";
+import { FileCheck, MoveUpRight } from "lucide-react";
+
+import { BuildPortfolioMessage } from "@/utils/classes/message";
+import Button from "@/components/Button";
+
+interface BuildPortfolioBotWrapperProps {
+  message: BuildPortfolioMessage;
+}
+
+const BuildPortfolioBotWrapper: React.FC<BuildPortfolioBotWrapperProps> = ({
+  message,
+}) => {
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="mt-4 text-lg font-bold">
+        ${message.amount} USDC Portfolio complete!
+      </p>
+      <div className="flex flex-col gap-2">
+        {message.strategies.map((strategy, index) => (
+          <p className="text-sm text-gray-400" key={index}>
+            {`${strategy.title} (${strategy.allocation}%) ${(
+              (strategy.allocation * Number(message.amount)) /
+              100
+            ).toFixed(4)} USDC`}
+          </p>
+        ))}
+      </div>
+      <div className="flex gap-5">
+        <Button
+          onClick={() => {
+            window.location.href = "/profile";
+          }}
+          text="Check my portfolio"
+          icon={<FileCheck />}
+        />
+        <Button
+          onClick={() => {
+            window.location.href = "/strategies";
+          }}
+          text="Explore more DeFi Investment"
+          icon={<MoveUpRight />}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default BuildPortfolioBotWrapper;

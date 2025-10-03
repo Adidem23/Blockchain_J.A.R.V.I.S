@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice Command Storage</title>
+</head>
+<body>
+  <h2>🎤 Voice to Walrus</h2>
+  <button id="start">Start Recording</button>
+  <button id="stop">Stop</button>
+  <p><b>Transcript:</b> <span id="transcript"></span></p>
+  <!-- <p><b>Stored Blob ID:</b> <span id="blobId"></span></p> -->
+
+  <script>
+    let recognition;
+    let transcript = "";
+
+    document.getElementById("start").onclick = () => {
+      if (!("webkitSpeechRecognition" in window)) {
+        alert("Speech recognition not supported!");
+        return;
+      }
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.continuous = true;
+
+      recognition.onresult = (event) => {
+        transcript = "";
+        for (let i = 0; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript + " ";
+        }
+        document.getElementById("transcript").innerText = transcript;
+      };
+
+      recognition.start();
+    };
+
+    document.getElementById("stop").onclick = async () => {
+      recognition.stop();
+      if (transcript.trim() === "") return;
+
+      const res = await fetch("http://localhost:3000/store", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ transcript })
+      });
+
+      const data = await res.json();
+      document.getElementById("blobId").innerText = data.blobId || "Error saving!";
+    };
+  </script>
+</body>
+</html>
+
